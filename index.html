@@ -8,6 +8,37 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
+
+<script>
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+    e.preventDefault(); // stop form from refreshing page
+    
+    // Get form values
+    let firstName = document.getElementById("firstName").value.trim();
+    let lastName = document.getElementById("lastName").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let subject = document.getElementById("subject").value.trim();
+    let message = document.getElementById("message").value.trim();
+    
+    // Basic validation
+    if (!firstName || !lastName || !email || !message) {
+        alert("⚠️ Please fill out all required fields.");
+        return;
+    }
+
+    // For now, just log values (you can connect to EmailJS or backend later)
+    console.log("Form Submitted:", { firstName, lastName, email, subject, message });
+
+    // Show success message
+    document.getElementById("formResponse").style.display = "block";
+
+    // Reset form
+    document.getElementById("contactForm").reset();
+});
+</script>
+
+
+
 <body>
 
     <div class="particle-container">
@@ -56,6 +87,12 @@
           <li>
             <strong>Hackhton </strong>
             <a href="https://swapnil-devkar.github.io/indiatem0.4/" target="_blank">Live</a>
+         
+          </li>
+
+           <li>
+            <strong>Solar System</strong>
+            <a href="https://priya-jamnik.github.io/Solar-System/" target="_blank">Live</a>
          
           </li>
         </ul>
@@ -187,23 +224,51 @@
         </div>
       </div>
     </div>
-    <form class="contact-form">
-      <div class="form-row">
-        <input type="text" placeholder="First Name" required>
-        <input type="text" placeholder="Last Name" required>
-      </div>
-      <input type="email" placeholder="Email Address" required>
-      <input type="text" placeholder="Subject">
-      <textarea rows="4" placeholder="Your message..." required></textarea>
-      <button type="submit">Send Message</button>
-    </form>
+   <form class="contact-form" id="contactForm">
+  <div class="form-row">
+    <input type="text" id="firstName" placeholder="First Name" required>
+    <input type="text" id="lastName" placeholder="Last Name" required>
   </div>
-</section>
+  <input type="email" id="email" placeholder="Email Address" required>
+  <input type="text" id="subject" placeholder="Subject">
+  <textarea rows="4" id="message" placeholder="Your message..." required></textarea>
+  <button type="submit">Send Message</button>
+</form>
+
+<!-- Message after form submission -->
+<p id="formResponse" style="display:none; color:green; margin-top:10px;">
+   ✅ Your message has been sent. Thank you!
+</p>
+
+
+
+
 
 
 
     </div>
 </section>
+
+<!-- ✅ Place both SDK and your JS HERE: right before closing body tag -->
+<script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+<script>
+(function(){
+   emailjs.init("YOUR_PUBLIC_KEY");
+})();
+document.getElementById("contactForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", this)
+    .then(function() {
+        document.getElementById("formResponse").style.display = "block";
+    }, function(error) {
+        alert("❌ Failed to send message. Try again later.");
+        console.error(error);
+    });
+    this.reset();
+});
+
+
+</script>
 
 
 </body>
